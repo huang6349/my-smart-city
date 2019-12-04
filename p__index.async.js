@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[2],{RXBc:function(e,n,t){"use strict";t.r(n);var u=t("q1tI"),a=t("usdK"),c=t.n(a),p=function(){return u["useEffect"](function(){c.a.push({pathname:"/map",query:{k:(new Date).getTime()}})},[]),u["createElement"](u["Fragment"],null)};n["default"]=p}}]);

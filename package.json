@@ -1,0 +1,55 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "umi dev",
+    "start:no-mock": "cross-env MOCK=none umi dev",
+    "build": "cross-env UMI_ENV=prod umi build",
+    "test": "umi test",
+    "lint": "eslint --ext .js src mock tests",
+    "precommit": "lint-staged"
+  },
+  "dependencies": {
+    "antd": "3.20.7",
+    "classnames": "^2.2.6",
+    "dva": "2.4.1",
+    "dva-core": "1.4.0",
+    "localforage": "^1.7.3",
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "nprogress": "^0.2.0",
+    "path-to-regexp": "6.1.0",
+    "prop-types": "15.6.2",
+    "qs": "6.9.1",
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-use": "13.8.2",
+    "redux": "3.7.2",
+    "sockette": "^2.0.5"
+  },
+  "devDependencies": {
+    "babel-eslint": "^9.0.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-umi": "1.4.5",
+    "eslint-plugin-flowtype": "^2.50.3",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-hooks": "2.1.2",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.3.0",
+    "react-test-renderer": "^16.7.0",
+    "redbox-react": "^1.6.0",
+    "umi": "2.7.7",
+    "umi-plugin-react": "1.8.4"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  }
+}

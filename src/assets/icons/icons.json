@@ -1,0 +1,8 @@
+{
+  "manhole-cover": {
+    "url": "icons/manhole-cover.png",
+    "height": 128,
+    "width": 128,
+    "mask": true
+  }
+}

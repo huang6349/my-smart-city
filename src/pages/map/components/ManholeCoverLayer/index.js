@@ -86,7 +86,7 @@ export default class ManholeCoverLayer extends CompositeLayer {
           billboard: !1,
           getPosition: this._getPosition,
           getIcon: this._getIcon,
-          getSize: () => (keyframes ? 20 : 5),
+          getSize: () => (keyframes ? 18 : 5),
           getColor: this._getColor,
           updateTriggers: {
             ...updateTriggers,

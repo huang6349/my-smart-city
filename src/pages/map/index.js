@@ -32,7 +32,7 @@ const IndexPage = () => {
     keyboard: !0,
   });
 
-  const { parentViewState, setMap } = React.useContext(PageContext);
+  const { parentViewState, setMap, isUnderground } = React.useContext(PageContext);
 
   React.useEffect(() => {
     setViewState((viewState) => ({ ...viewState, ...parentViewState }));
@@ -92,6 +92,7 @@ const IndexPage = () => {
         autoHighlight={!0}
         data={require('@/assets/manhole-cover.json')}
         opacity={1}
+        visible={!isUnderground}
       ></ManholeCoverLayer>
     </DeckGL>
   );

@@ -1,0 +1,7 @@
+.btn {
+  transition: transform 0.3s;
+}
+
+.up {
+  transform: scaleY(-1);
+}

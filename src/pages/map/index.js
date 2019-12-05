@@ -4,7 +4,7 @@ import DeckGL from '@deck.gl/react';
 import { MapController } from '@deck.gl/core';
 import { useIdle } from 'react-use';
 import { connect } from 'dva';
-import { PageContext, ManholeCoverLayer, PipesLayer } from './components';
+import { PageContext, ManholeCoverLayer, PipesLayer, TripsAnimationLayer } from './components';
 import { useRotateCamera } from './hooks';
 
 const { MAP_VIEW_STATE } = process.env;
@@ -91,9 +91,9 @@ const IndexPage = () => {
         pickable={!0}
         autoHighlight={!0}
         data={require('@/assets/manhole-cover.json')}
-        opacity={1}
+        opacity={1.0}
         visible={!isUnderground}
-      ></ManholeCoverLayer>
+      />
 
       <PipesLayer
         id="pipes-layer"
@@ -102,6 +102,17 @@ const IndexPage = () => {
         data={require('@/assets/pipes.json')}
         opacity={0.85}
         visible={isUnderground}
+      />
+
+      <TripsAnimationLayer
+        id="trips-layer"
+        data={require('@/assets/trip.json')}
+        visible={!isUnderground}
+        opacity={0.3}
+        widthMinPixels={2}
+        rounded={true}
+        trailLength={2000}
+        shadowEnabled={false}
       />
     </DeckGL>
   );

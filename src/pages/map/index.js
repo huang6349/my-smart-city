@@ -32,7 +32,7 @@ const IndexPage = () => {
     keyboard: !0,
   });
 
-  const { parentViewState, setMap, isUnderground } = React.useContext(PageContext);
+  const { parentViewState, map, setMap, isUnderground } = React.useContext(PageContext);
 
   React.useEffect(() => {
     setViewState((viewState) => ({ ...viewState, ...parentViewState }));
@@ -81,8 +81,8 @@ const IndexPage = () => {
       <StaticMap
         preventStyleDiffing={!1}
         reuseMaps={!0}
-        ref={(ref) => ref && setMap(ref.getMap())}
         mapStyle={require('@/assets/style.json')}
+        onLoad={({ target }) => setMap(target)}
         onError={() => {}}
       ></StaticMap>
 
@@ -92,7 +92,7 @@ const IndexPage = () => {
         autoHighlight={!0}
         data={require('@/assets/manhole-cover.json')}
         opacity={1.0}
-        visible={!isUnderground}
+        visible={map && !isUnderground}
       />
 
       <PipesLayer
@@ -101,14 +101,14 @@ const IndexPage = () => {
         autoHighlight={!0}
         data={require('@/assets/pipes.json')}
         opacity={0.85}
-        visible={isUnderground}
+        visible={map && isUnderground}
       />
 
       <TripsAnimationLayer
         id="trips-layer"
         data={require('@/assets/trip.json')}
-        visible={!isUnderground}
         opacity={0.3}
+        visible={map && !isUnderground}
         widthMinPixels={2}
         rounded={!0}
         trailLength={280}

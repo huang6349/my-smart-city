@@ -36,7 +36,7 @@ const LayoutPage = function({ children }) {
   };
 
   return (
-    <PageContext.Provider value={{ parentViewState: viewState, setMap, isUnderground }}>
+    <PageContext.Provider value={{ parentViewState: viewState, map, setMap, isUnderground }}>
       <MidRightBar>
         <MidRightBar.HomeControl loading={!map} onClick={handleHomeClick} />
         <MidRightBar.UndergroundControl

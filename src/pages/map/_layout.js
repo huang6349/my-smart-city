@@ -2,12 +2,16 @@ import * as React from 'react';
 import { connect } from 'dva';
 import { FlyToInterpolator } from '@deck.gl/core';
 import * as d3 from 'd3-ease';
+import { usePerformanceMonitor } from '@/hooks';
 import { PageContext, MidRightBar } from './components';
+import styles from './_layout.css';
 
 const { MAP_VIEW_STATE } = process.env;
 
 const LayoutPage = function({ children }) {
   const [viewState, setViewState] = React.useState({});
+
+  const [fps] = usePerformanceMonitor();
 
   const handleHomeClick = () => {
     setViewState(() => ({
@@ -24,6 +28,7 @@ const LayoutPage = function({ children }) {
         <MidRightBar.HomeControl onClick={handleHomeClick} />
       </MidRightBar>
       <React.Fragment>{children}</React.Fragment>
+      <div className={styles['monitor']}>{fps}</div>
     </PageContext.Provider>
   );
 };

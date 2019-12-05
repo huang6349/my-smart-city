@@ -22,7 +22,7 @@ export default {
         pwa: false,
         hd: false,
         fastClick: false,
-        title: 'my-smart-city',
+        title: '我的智慧城市',
       },
     ],
   ],

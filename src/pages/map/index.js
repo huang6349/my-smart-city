@@ -4,7 +4,7 @@ import DeckGL from '@deck.gl/react';
 import { MapController } from '@deck.gl/core';
 import { useIdle } from 'react-use';
 import { connect } from 'dva';
-import { PageContext, ManholeCoverLayer } from './components';
+import { PageContext, ManholeCoverLayer, PipesLayer } from './components';
 import { useRotateCamera } from './hooks';
 
 const { MAP_VIEW_STATE } = process.env;
@@ -94,6 +94,15 @@ const IndexPage = () => {
         opacity={1}
         visible={!isUnderground}
       ></ManholeCoverLayer>
+
+      <PipesLayer
+        id="pipes-layer"
+        pickable={!0}
+        autoHighlight={!0}
+        data={require('@/assets/pipes.json')}
+        opacity={0.85}
+        visible={isUnderground}
+      />
     </DeckGL>
   );
 };

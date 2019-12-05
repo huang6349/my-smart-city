@@ -11,6 +11,8 @@ const { MAP_VIEW_STATE } = process.env;
 const LayoutPage = function({ children }) {
   const [viewState, setViewState] = React.useState({});
 
+  const [map, setMap] = React.useState(null);
+
   const [fps] = usePerformanceMonitor();
 
   const handleHomeClick = () => {
@@ -23,7 +25,7 @@ const LayoutPage = function({ children }) {
   };
 
   return (
-    <PageContext.Provider value={{ parentViewState: viewState }}>
+    <PageContext.Provider value={{ parentViewState: viewState, map, setMap }}>
       <MidRightBar>
         <MidRightBar.HomeControl onClick={handleHomeClick} />
       </MidRightBar>

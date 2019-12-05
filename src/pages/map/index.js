@@ -2,8 +2,10 @@ import * as React from 'react';
 import { StaticMap, _MapContext as MapContext } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
 import { MapController } from '@deck.gl/core';
+import { useIdle } from 'react-use';
 import { connect } from 'dva';
 import { PageContext, ManholeCoverLayer } from './components';
+import { useRotateCamera } from './hooks';
 
 const { MAP_VIEW_STATE } = process.env;
 
@@ -30,11 +32,22 @@ const IndexPage = () => {
     keyboard: !0,
   });
 
-  const { parentViewState } = React.useContext(PageContext);
+  const { parentViewState, setMap } = React.useContext(PageContext);
 
   React.useEffect(() => {
     setViewState((viewState) => ({ ...viewState, ...parentViewState }));
   }, [parentViewState]);
+
+  const isIdle = useIdle(1000 * 60 * 5, !1);
+
+  const [rotateCameraViewState] = useRotateCamera({
+    viewState,
+    disable: isIdle,
+  });
+
+  React.useEffect(() => {
+    setViewState((viewState) => ({ ...viewState, ...rotateCameraViewState }));
+  }, [rotateCameraViewState]);
 
   const handleWebGLInitialized = () => {
     document.getElementById('deckgl-wrapper').addEventListener('contextmenu', (evt) => evt.preventDefault());
@@ -67,6 +80,7 @@ const IndexPage = () => {
       <StaticMap
         preventStyleDiffing={!1}
         reuseMaps={!0}
+        ref={(ref) => ref && setMap(ref.getMap())}
         mapStyle={require('@/assets/style.json')}
         onError={() => {}}
       ></StaticMap>

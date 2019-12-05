@@ -30,6 +30,10 @@ const IndexPage = () => {
     keyboard: !0,
   });
 
+  const handleWebGLInitialized = () => {
+    document.getElementById('deckgl-wrapper').addEventListener('contextmenu', (evt) => evt.preventDefault());
+  };
+
   const handleViewStateChange = ({ viewState }) => {
     if (viewState['longitude'] < MIN_MAX_BOUNDS[0][0]) {
       viewState['longitude'] = MIN_MAX_BOUNDS[0][0];
@@ -51,6 +55,7 @@ const IndexPage = () => {
       ContextProvider={MapContext.Provider}
       viewState={viewState}
       controller={controller}
+      onWebGLInitialized={handleWebGLInitialized}
       onViewStateChange={handleViewStateChange}
     >
       <StaticMap

@@ -72,6 +72,7 @@ const IndexPage = () => {
   return (
     <DeckGL
       ContextProvider={MapContext.Provider}
+      pickingRadius={3}
       viewState={viewState}
       controller={controller}
       onWebGLInitialized={handleWebGLInitialized}

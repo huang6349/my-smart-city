@@ -110,9 +110,9 @@ const IndexPage = () => {
         visible={!isUnderground}
         opacity={0.3}
         widthMinPixels={2}
-        rounded={true}
-        trailLength={2000}
-        shadowEnabled={false}
+        rounded={!0}
+        trailLength={280}
+        shadowEnabled={!1}
       />
     </DeckGL>
   );

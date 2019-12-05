@@ -5,7 +5,7 @@ export default class TripsAnimationLayer extends CompositeLayer {
   static layerName = 'TripsAnimationLayer';
 
   static defaultProps = {
-    loopLength: 1800,
+    loopLength: 2000,
     animationSpeed: 30,
   };
 

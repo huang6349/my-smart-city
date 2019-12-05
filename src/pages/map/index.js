@@ -3,7 +3,7 @@ import { StaticMap, _MapContext as MapContext } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
 import { MapController } from '@deck.gl/core';
 import { connect } from 'dva';
-import { ManholeCoverLayer } from './components';
+import { PageContext, ManholeCoverLayer } from './components';
 
 const { MAP_VIEW_STATE } = process.env;
 
@@ -29,6 +29,12 @@ const IndexPage = () => {
     touchRotate: !0,
     keyboard: !0,
   });
+
+  const { parentViewState } = React.useContext(PageContext);
+
+  React.useEffect(() => {
+    setViewState((viewState) => ({ ...viewState, ...parentViewState }));
+  }, [parentViewState]);
 
   const handleWebGLInitialized = () => {
     document.getElementById('deckgl-wrapper').addEventListener('contextmenu', (evt) => evt.preventDefault());

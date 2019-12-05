@@ -1,3 +1,5 @@
+import darkTheme from '@ant-design/dark-theme';
+
 export default {
   treeShaking: true,
   plugins: [
@@ -29,6 +31,7 @@ export default {
     ie: 9,
   },
   theme: {
+    ...darkTheme,
     '@border-radius-base': '2px',
     '@table-padding-vertical': '10px',
     '@table-padding-horizontal': '12px',

@@ -9,6 +9,7 @@
     "precommit": "lint-staged"
   },
   "dependencies": {
+    "@ant-design/dark-theme": "^1.0.3",
     "@turf/turf": "^5.1.6",
     "antd": "3.20.7",
     "chroma-js": "^2.1.0",

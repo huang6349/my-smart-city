@@ -5,7 +5,7 @@ import { MapController } from '@deck.gl/core';
 import { useIdle } from 'react-use';
 import { connect } from 'dva';
 import { PageContext, ManholeCoverLayer, PipesLayer, TripsAnimationLayer } from './components';
-import { useRotateCamera } from './hooks';
+import { useMapScan, useRotateCamera } from './hooks';
 
 const { MAP_VIEW_STATE } = process.env;
 
@@ -37,6 +37,8 @@ const IndexPage = () => {
   React.useEffect(() => {
     setViewState((viewState) => ({ ...viewState, ...parentViewState }));
   }, [parentViewState]);
+
+  useMapScan({ map });
 
   const isIdle = useIdle(1000 * 60 * 5, !1);
 
@@ -80,7 +82,7 @@ const IndexPage = () => {
     >
       <StaticMap
         preventStyleDiffing={!1}
-        reuseMaps={!0}
+        reuseMaps={!1}
         mapStyle={require('@/assets/style.json')}
         onLoad={({ target }) => setMap(target)}
         onError={() => {}}

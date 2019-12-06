@@ -215,13 +215,18 @@
       "paint": {
         "fill-extrusion-opacity": ["interpolate", ["linear"], ["zoom"], 10, 0.25, 12, 0.5, 18, 1],
         "fill-extrusion-color": [
-          "interpolate",
-          ["linear"],
-          ["*", 4, ["to-number", ["get", "floor"]]],
-          0,
-          "hsl(221, 40%, 9%)",
-          50,
-          "hsl(212, 8%, 32%)"
+          "case",
+          ["boolean", ["feature-state", "highlighted"], false],
+          "hsl(0, 0%, 95%)",
+          [
+            "interpolate",
+            ["linear"],
+            ["*", 4, ["to-number", ["get", "floor"]]],
+            0,
+            "hsl(221, 40%, 9%)",
+            50,
+            "hsl(212, 8%, 32%)"
+          ]
         ],
         "fill-extrusion-height": ["*", 5, ["to-number", ["get", "floor"]]]
       }

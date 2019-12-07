@@ -5,6 +5,7 @@ import { useMap } from 'react-use';
 import { MidRightBarContext } from './context';
 import HomeControl from './HomeControl';
 import UndergroundControl from './UndergroundControl';
+import ScanControl from './ScanControl';
 import style from './index.css';
 
 export default function MidRightBarView({ visible, children }) {
@@ -27,3 +28,4 @@ MidRightBarView.defaultProps = {
 
 MidRightBarView.HomeControl = HomeControl;
 MidRightBarView.UndergroundControl = UndergroundControl;
+MidRightBarView.ScanControl = ScanControl;

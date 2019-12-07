@@ -13,7 +13,9 @@ const LayoutPage = function({ children }) {
 
   const [map, setMap] = React.useState(null);
 
-  const [isUnderground, setisUnderground] = React.useState(!1);
+  const [isUnderground, setIsUnderground] = React.useState(!1);
+
+  const [isScan, setIsScan] = React.useState(!1);
 
   React.useLayoutEffect(() => {
     setViewState(() => ({
@@ -36,14 +38,20 @@ const LayoutPage = function({ children }) {
   };
 
   return (
-    <PageContext.Provider value={{ parentViewState: viewState, map, setMap, isUnderground }}>
+    <PageContext.Provider value={{ parentViewState: viewState, map, setMap, isUnderground, isScan }}>
       <MidRightBar>
         <MidRightBar.HomeControl loading={!map} onClick={handleHomeClick} />
         <MidRightBar.UndergroundControl
           loading={!map}
           isUnderground={isUnderground}
           map={map}
-          onClick={(isUnderground) => setisUnderground(isUnderground)}
+          onClick={(isUnderground) => setIsUnderground(isUnderground)}
+        />
+        <MidRightBar.ScanControl
+          loading={!map}
+          isScan={isScan && !isUnderground}
+          map={map}
+          onClick={(isScan) => setIsScan(isScan)}
         />
       </MidRightBar>
       <React.Fragment>{children}</React.Fragment>

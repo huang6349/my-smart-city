@@ -40,7 +40,7 @@ export default function UndergroundControlView({ loading, isUnderground, map, on
     <Tooltip title={`进入${!isUnderground ? '地下模式' : '地上模式'}`} placement="left">
       <Button
         className={classNames(style['btn'], { [style['up']]: isUnderground })}
-        icon={'vertical-align-bottom'}
+        icon="vertical-align-bottom"
         loading={loading}
         shape="circle"
         type="primary"

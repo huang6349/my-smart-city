@@ -6,7 +6,7 @@ import * as turf from '@turf/turf';
 import { IconFont } from '@/components';
 
 export default function ScanControlView({ loading, isScan, map, onClick }) {
-  const [{ features, filter }, { set }] = useMap({ radius: 0.0 });
+  const [{ features }, { set }] = useMap({ radius: 0.0 });
 
   React.useEffect(() => {
     if (!map) return;
@@ -19,29 +19,26 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
     return () => set('features', []);
   }, [map]);
 
-  React.useEffect(() => {
-    if (!map || !filter) return;
+  React.useLayoutEffect(() => {
+    if (!map || !features || !isScan) return;
     const fn = (id, highlighted) => {
       map.setFeatureState({ id, source: 'buildings', sourceLayer: 'buildings' }, { highlighted });
     };
-    filter.forEach(({ id }) => fn(id, !0));
-    return () => filter.forEach(({ id }) => fn(id, !1));
-  }, [map, filter]);
 
-  React.useLayoutEffect(() => {
-    if (!map || !features || !isScan) return;
-    const speedFactor = 30;
+    const speedFactor = 25;
     let animation;
     let startTime = 0;
     let radius = 0.0;
+    let filter = [];
 
     const updateFrame = (timestamp) => {
       const progress = timestamp - startTime;
       if (progress > speedFactor) {
         startTime = timestamp;
-        const filter = features.filter(({ distance }) => distance < radius && distance > radius - 0.1);
+        filter.forEach(({ id }) => fn(id, !1));
+        filter = features.filter(({ distance }) => distance < radius && distance > radius - 0.1);
+        filter.forEach(({ id }) => fn(id, !0));
         radius = radius >= 10.0 ? 0.0 : radius + 0.2;
-        set('filter', filter);
       }
       animation = requestAnimationFrame(updateFrame);
     };
@@ -49,7 +46,7 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
 
     return () => {
       cancelAnimationFrame(animation);
-      set('filter', []);
+      filter.forEach(({ id }) => fn(id, !1));
     };
   }, [map, features, isScan]);
 

@@ -5,7 +5,7 @@ const useRotateCamera = function({ viewState, speed = 5, mode = 'default', disab
   const [rotateViewState, setRotateViewState] = React.useState({});
   const [getDirection, setDirection] = useGetSet(!0);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (!disable) return;
 
     const speedFactor = 15;

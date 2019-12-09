@@ -1,13 +1,26 @@
 import * as React from 'react';
 import { StaticMap, _MapContext as MapContext } from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
-import { MapController } from '@deck.gl/core';
+import { AmbientLight, PointLight, LightingEffect, MapController } from '@deck.gl/core';
 import { useIdle } from 'react-use';
 import { connect } from 'dva';
 import { PageContext, ManholeCoverLayer, PipesLayer, TripsAnimationLayer } from './components';
 import { useRotateCamera } from './hooks';
 
 const { MAP_VIEW_STATE } = process.env;
+
+const ambientLight = new AmbientLight({
+  color: [255, 255, 255],
+  intensity: 1.0,
+});
+
+const pointLight = new PointLight({
+  color: [255, 255, 255],
+  intensity: 2.0,
+  position: [-74.05, 40.7, 8000],
+});
+
+const lightingEffect = new LightingEffect({ ambientLight, pointLight });
 
 const MIN_MAX_BOUNDS = [
   [113.8719, 22.5105],
@@ -72,6 +85,7 @@ const IndexPage = () => {
   return (
     <DeckGL
       ContextProvider={MapContext.Provider}
+      effects={[lightingEffect]}
       pickingRadius={3}
       viewState={viewState}
       controller={controller}

@@ -11,20 +11,17 @@ const useRotateCamera = function({ viewState, speed = 5, mode = 'default', disab
     const speedFactor = 15;
     let animation;
     let startTime = 0;
-
     let { bearing = 0 } = viewState;
 
-    const rotateCamera = (timestamp) => {
+    const updateFrame = (timestamp) => {
       const progress = timestamp - startTime;
       if (progress > speedFactor) {
         startTime = timestamp;
-
         setRotateViewState((rotateViewState) => ({
           ...rotateViewState,
           bearing: bearing,
           transitionDuration: 0,
         }));
-
         if (mode === 'spiral') {
           bearing = (bearing >= 360 ? 0 : bearing) + speed / 100;
         } else {
@@ -33,12 +30,9 @@ const useRotateCamera = function({ viewState, speed = 5, mode = 'default', disab
           bearing = getDirection() ? bearing + speed / 100 : bearing - speed / 100;
         }
       }
-
-      animation = requestAnimationFrame(rotateCamera);
+      animation = requestAnimationFrame(updateFrame);
     };
-
-    startTime = performance.now();
-    rotateCamera(startTime);
+    animation = requestAnimationFrame(updateFrame);
 
     return () => {
       cancelAnimationFrame(animation);

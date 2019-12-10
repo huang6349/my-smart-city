@@ -2,6 +2,9 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { useMap } from 'react-use';
 import { Button, Tooltip } from 'antd';
+import groupBy from 'lodash/groupBy';
+import transform from 'lodash/transform';
+import reduce from 'lodash/reduce';
 import * as turf from '@turf/turf';
 import { IconFont } from '@/components';
 
@@ -13,9 +16,12 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
     const center = turf.point([114.0213, 22.5523]);
     const features = map.querySourceFeatures('buildings', { sourceLayer: 'buildings' }).map((feature) => ({
       id: feature['id'],
-      distance: turf.distance(center, turf.center(feature)),
+      distance: Number(turf.distance(center, turf.center(feature)).toFixed(2)),
     }));
-    set('features', features);
+    const fn = (result, feature, distance) => {
+      result.push({ distance: Number(distance), ids: feature.map(({ id }) => id) });
+    };
+    set('features', transform(groupBy(features, 'distance'), fn, []));
     return () => set('features', []);
   }, [map]);
 
@@ -25,7 +31,7 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
       map.setFeatureState({ id, source: 'buildings', sourceLayer: 'buildings' }, { highlighted });
     };
 
-    const speedFactor = 25;
+    const speedFactor = 30;
     let animation;
     let startTime = 0;
     let radius = 0.0;
@@ -35,12 +41,13 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
       const progress = timestamp - startTime;
       if (progress > speedFactor) {
         startTime = timestamp;
-        objs[`k${radius}`] && objs[`k${radius}`].forEach(({ id }) => fn(id, !1));
+        objs[radius] && objs[radius].forEach((id) => fn(id, !1));
         radius = Number((radius >= 10.0 ? 0.0 : radius + 0.2).toFixed(2));
-        if (!objs[`k${radius}`]) {
-          objs[`k${radius}`] = features.filter(({ distance }) => distance < radius && distance > radius - 0.1);
+        if (!objs[radius]) {
+          const filter = features.filter(({ distance }) => distance < radius && distance > radius - 0.1);
+          objs[radius] = reduce(filter, (result, { ids }) => [...result, ...ids], []);
         }
-        objs[`k${radius}`].forEach(({ id }) => fn(id, !0));
+        objs[radius].forEach((id) => fn(id, !0));
       }
       animation = requestAnimationFrame(updateFrame);
     };
@@ -48,7 +55,7 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
 
     return () => {
       cancelAnimationFrame(animation);
-      objs[`k${radius}`] && objs[`k${radius}`].forEach(({ id }) => fn(id, !1));
+      objs[radius] && objs[radius].forEach((id) => fn(id, !1));
     };
   }, [map, features, isScan]);
 

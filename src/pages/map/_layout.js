@@ -15,8 +15,6 @@ const LayoutPage = function({ children }) {
 
   const [isUnderground, setIsUnderground] = React.useState(!1);
 
-  const [isScan, setIsScan] = React.useState(!1);
-
   React.useLayoutEffect(() => {
     setViewState(() => ({
       ...MAP_VIEW_STATE,
@@ -25,6 +23,8 @@ const LayoutPage = function({ children }) {
       transitionEasing: d3.easeCubic,
     }));
   }, [isUnderground]);
+
+  const [isScan, setIsScan] = React.useState(!1);
 
   const [fps] = usePerformanceMonitor();
 

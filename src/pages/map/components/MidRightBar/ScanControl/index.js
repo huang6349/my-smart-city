@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { useMap } from 'react-use';
+import { useMap, useGetSetState } from 'react-use';
 import { Button, Tooltip } from 'antd';
 import groupBy from 'lodash/groupBy';
 import transform from 'lodash/transform';
@@ -9,6 +9,7 @@ import * as turf from '@turf/turf';
 import { IconFont } from '@/components';
 
 export default function ScanControlView({ loading, isScan, map, onClick }) {
+  const [state, setState] = useGetSetState({ objs: {} });
   const [{ features }, { set }] = useMap({});
 
   React.useEffect(() => {
@@ -35,7 +36,7 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
     let animation;
     let startTime = 0;
     let radius = 0.0;
-    let objs = {};
+    let objs = state()['objs'] || {};
 
     const updateFrame = (timestamp) => {
       const progress = timestamp - startTime;
@@ -56,6 +57,7 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
     return () => {
       cancelAnimationFrame(animation);
       objs[radius] && objs[radius].forEach((id) => fn(id, !1));
+      setState({ objs });
     };
   }, [map, features, isScan]);
 

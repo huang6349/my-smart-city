@@ -6,6 +6,7 @@ import groupBy from 'lodash/groupBy';
 import transform from 'lodash/transform';
 import reduce from 'lodash/reduce';
 import * as turf from '@turf/turf';
+import { Tween } from 'es6-tween';
 import { IconFont } from '@/components';
 
 export default function ScanControlView({ loading, isScan, map, onClick }) {
@@ -32,32 +33,29 @@ export default function ScanControlView({ loading, isScan, map, onClick }) {
       map.setFeatureState({ id, source: 'buildings', sourceLayer: 'buildings' }, { highlighted });
     };
 
-    const speedFactor = 30;
-    let animation;
-    let startTime = 0;
-    let radius = 0.0;
-    let objs = state()['objs'] || {};
+    const objs = state()['objs'] || {};
+    let prevRadius = 0.0;
 
-    const updateFrame = (timestamp) => {
-      const progress = timestamp - startTime;
-      if (progress > speedFactor) {
-        startTime = timestamp;
-        objs[radius] && objs[radius].forEach((id) => fn(id, !1));
-        radius = Number((radius >= 10.0 ? 0.0 : radius + 0.2).toFixed(2));
-        if (!objs[radius]) {
-          const filter = features.filter(({ distance }) => distance < radius && distance > radius - 0.1);
-          objs[radius] = reduce(filter, (result, { ids }) => [...result, ...ids], []);
-        }
-        objs[radius].forEach((id) => fn(id, !0));
+    const tween = new Tween({ radius: 0.0 });
+    tween.to({ radius: 10.0 }, 1200);
+    tween.repeat(Infinity);
+    tween.yoyo(!1);
+    tween.on('update', ({ radius }) => {
+      const currRadius = radius.toFixed(2);
+      objs[prevRadius] && objs[prevRadius].forEach((id) => fn(id, !1));
+      prevRadius = currRadius;
+      if (!objs[currRadius]) {
+        const filter = features.filter(({ distance }) => distance < currRadius && distance > currRadius - 0.1);
+        objs[currRadius] = reduce(filter, (result, { ids }) => [...result, ...ids], []);
       }
-      animation = requestAnimationFrame(updateFrame);
-    };
-    animation = requestAnimationFrame(updateFrame);
+      objs[currRadius].forEach((id) => fn(id, !0));
+    });
+    tween.restart();
 
     return () => {
-      cancelAnimationFrame(animation);
-      objs[radius] && objs[radius].forEach((id) => fn(id, !1));
+      tween.stop();
       setState({ objs });
+      objs[prevRadius] && objs[prevRadius].forEach((id) => fn(id, !1));
     };
   }, [map, features, isScan]);
 

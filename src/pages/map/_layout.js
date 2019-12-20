@@ -29,7 +29,8 @@ const LayoutPage = function({ children }) {
   const [fps] = usePerformanceMonitor();
 
   const handleHomeClick = () => {
-    setViewState(() => ({
+    setViewState((viewState) => ({
+      ...viewState,
       ...MAP_VIEW_STATE,
       transitionDuration: 1000,
       transitionInterpolator: new FlyToInterpolator(),

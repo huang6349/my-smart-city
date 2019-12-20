@@ -6373,6 +6373,11 @@ es5-imcompatible-versions@^0.1.25:
   resolved "https://registry.npm.taobao.org/es5-imcompatible-versions/download/es5-imcompatible-versions-0.1.54.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fes5-imcompatible-versions%2Fdownload%2Fes5-imcompatible-versions-0.1.54.tgz#0ecb2a78a41b2da03cf43846754149322b5c8559"
   integrity sha1-DssqeKQbLaA89DhGdUFJMitchVk=
 
+es6-tween@^5.5.10:
+  version "5.5.10"
+  resolved "https://registry.npm.taobao.org/es6-tween/download/es6-tween-5.5.10.tgz#1267d602279fe0fcb98f796f05e745945b04c1ed"
+  integrity sha1-EmfWAief4Py5j3lvBedFlFsEwe0=
+
 escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.npm.taobao.org/escape-html/download/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"

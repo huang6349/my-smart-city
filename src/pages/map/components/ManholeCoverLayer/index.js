@@ -1,8 +1,8 @@
 import { CompositeLayer } from '@deck.gl/core';
 import { IconLayer } from '@deck.gl/layers';
-import * as d3 from 'd3-ease';
 import chroma from 'chroma-js';
 import keyBy from 'lodash/keyBy';
+import { Tween, Easing } from 'es6-tween';
 import styles from './index.css';
 
 const MANHOLE_COVER_STATE_C = keyBy(process.env.MANHOLE_COVER_STATE, 'state');
@@ -15,7 +15,22 @@ export default class ManholeCoverLayer extends CompositeLayer {
     el.setAttribute('class', styles['tooltip']);
     el.style.display = 'none';
     document.body.appendChild(el);
-    this.state = { el, keyframes: !1 };
+    const tween = new Tween({ size: 5 });
+    tween.to({ size: 18 }, 1000);
+    tween.easing(Easing.Quadratic.InOut);
+    tween.repeat(Infinity);
+    tween.yoyo(!0);
+    tween.on('update', ({ size }) => {
+      this.setState({ size });
+    });
+    this.state = { el, tween, size: 5 };
+  }
+
+  updateState({ props: { visible }, oldProps: { visible: oldVisible } }) {
+    if (visible !== oldVisible) {
+      const { tween } = this.state;
+      visible ? tween.restart() : tween.stop();
+    }
   }
 
   finalizeState() {
@@ -52,8 +67,8 @@ export default class ManholeCoverLayer extends CompositeLayer {
   }
 
   renderLayers() {
-    const { keyframes } = this.state;
-    const { id, data = [], pickable, updateTriggers, transitions, ...otherProps } = this.props;
+    const { size } = this.state;
+    const { id, data = [], pickable, updateTriggers, ...otherProps } = this.props;
 
     return [
       new IconLayer(
@@ -70,8 +85,10 @@ export default class ManholeCoverLayer extends CompositeLayer {
           getIcon: this._getIcon,
           getSize: () => 5,
           getColor: this._getColor,
-          updateTriggers: updateTriggers,
-          transitions: transitions,
+          updateTriggers: {
+            ...updateTriggers,
+            getSize: [size],
+          },
         })
       ),
       new IconLayer(
@@ -86,20 +103,11 @@ export default class ManholeCoverLayer extends CompositeLayer {
           billboard: !1,
           getPosition: this._getPosition,
           getIcon: this._getIcon,
-          getSize: () => (keyframes ? 18 : 5),
+          getSize: () => size,
           getColor: this._getColor,
           updateTriggers: {
             ...updateTriggers,
-            getSize: [keyframes],
-          },
-          transitions: {
-            ...transitions,
-            getSize: {
-              type: 'interpolation',
-              duration: 1000,
-              easing: d3.easeQuadInOut,
-              onEnd: () => this.setState({ keyframes: !keyframes }),
-            },
+            getSize: [size],
           },
         })
       ),

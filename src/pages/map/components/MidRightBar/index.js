@@ -6,6 +6,7 @@ import { MidRightBarContext } from './context';
 import HomeControl from './HomeControl';
 import UndergroundControl from './UndergroundControl';
 import ScanControl from './ScanControl';
+import ScreenfullControl from './ScreenfullControl';
 import style from './index.css';
 
 export default function MidRightBarView({ visible, children }) {
@@ -29,3 +30,4 @@ MidRightBarView.defaultProps = {
 MidRightBarView.HomeControl = HomeControl;
 MidRightBarView.UndergroundControl = UndergroundControl;
 MidRightBarView.ScanControl = ScanControl;
+MidRightBarView.ScreenfullControl = ScreenfullControl;

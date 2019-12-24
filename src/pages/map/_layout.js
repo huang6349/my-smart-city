@@ -54,6 +54,7 @@ const LayoutPage = function({ children }) {
           map={map}
           onClick={(isScan) => setIsScan(isScan)}
         />
+        <MidRightBar.ScreenfullControl loading={!map} />
       </MidRightBar>
       <React.Fragment>{children}</React.Fragment>
       <div className={styles['monitor']}>{fps}</div>

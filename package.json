@@ -21,7 +21,7 @@
     "es6-tween": "^5.5.10",
     "localforage": "^1.7.3",
     "lodash": "^4.17.11",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "nprogress": "^0.2.0",
     "path-to-regexp": "6.1.0",
     "prop-types": "15.6.2",
